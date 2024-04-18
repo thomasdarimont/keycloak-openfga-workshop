@@ -5,14 +5,15 @@ services:
     depends_on: 
       openfga:
         condition: service_healthy 
-    image: openfga/cli:v0.2.0
+    image: openfga/cli:v0.3.0
     container_name: openfga-import
     restart: "no"
     command: "store create --name keycloak --api-url http://openfga:8080 --model /tmp/model.dsl"
     networks:
       - default
     volumes:
-      - $PWD/openfga:/tmp  
+      - $PWD/openfga:/tmp
+
   keycloak-import:
     depends_on:
       openfga:
@@ -21,7 +22,7 @@ services:
         condition: service_healthy
       openfga-import:
         condition: service_completed_successfully
-    image: quay.io/keycloak/keycloak:21.1
+    image: quay.io/keycloak/keycloak:24.0.3
     container_name: keycloak-import
     restart: "no"
     entrypoint: [
